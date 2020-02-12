@@ -3,13 +3,13 @@
 class GuessingGame
   attr_reader :input, :output
 
-  def initialize(input: $stdin, output: $stdout)
+  def initialize(input: $stdin, output: $stdout, number: rand(1..100))
     @input = input
     @output = output
+    @number = number
   end
 
   def play
-    @number = rand(1..100)
     @guess = nil
 
     5.downto(1) do |remaining_guesses|
