@@ -1,5 +1,13 @@
 # frozen_string_literal: true
+
 class GuessingGame
+  attr_reader :input, :output
+
+  def initialize(input: $stdin, output: $stdout)
+    @input = input
+    @output = output
+  end
+
   def play
     @number = rand(1..100)
     @guess = nil
@@ -7,8 +15,8 @@ class GuessingGame
     5.downto(1) do |remaining_guesses|
       break if @guess == @number
 
-      puts "Pick a number 1-100 (#{remaining_guesses} guesses left):"
-      @guess = gets.to_i
+      output.puts "Pick a number 1-100 (#{remaining_guesses} guesses left):"
+      @guess = input.gets.to_i
       check_guess
     end
 
@@ -19,17 +27,17 @@ class GuessingGame
 
   def check_guess
     if @guess > @number
-      puts "#{@guess} is too high!"
+      output.puts "#{@guess} is too high!"
     elsif @guess < @number
-      puts "#{@guess} is too low!"
+      output.puts "#{@guess} is too low!"
     end
   end
 
   def announce_result
     if @guess == @number
-      puts 'You won!'
+      output.puts 'You won!'
     else
-      puts "You lost! The number was: #{@number}"
+      output.puts "You lost! The number was: #{@number}"
     end
   end
 end
