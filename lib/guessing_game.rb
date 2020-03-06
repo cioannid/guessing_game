@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GuessingGame
+  ATTEMPTS_LIMIT = 5
+
   attr_reader :input, :output
 
   def initialize(input: $stdin, output: $stdout, number: rand(1..100))
@@ -10,35 +12,40 @@ class GuessingGame
   end
 
   def play
-    @guess = nil
-
-    5.downto(1) do |remaining_guesses|
-      break if @guess == @number
-
-      output.puts "Pick a number 1-100 (#{remaining_guesses} guesses left):"
-      @guess = input.gets.to_i
-      check_guess
+    guess = nil
+    ATTEMPTS_LIMIT.downto(1) do |remaining_guesses|
+      announce "Pick a number 1-100 (#{remaining_guesses} guesses left):"
+      guess = input.gets.to_i
+      break if correct_guess?(guess, @number)
+      announce hint(guess, @number)
     end
+    announce result(correct_guess?(guess, @number), @number)
+  end
 
-    announce_result
+  def correct_guess?(guess, number)
+    number == guess
   end
 
   private
 
-  def check_guess
-    if @guess > @number
-      output.puts "#{@guess} is too high!"
-    elsif @guess < @number
-      output.puts "#{@guess} is too low!"
+  def hint(guess, number)
+    if guess > number
+      "#{guess} is too high!"
+    elsif guess < number
+      "#{guess} is too low!"
     end
   end
 
-  def announce_result
-    if @guess == @number
-      output.puts 'You won!'
+  def result(successful_guess, number)
+    if successful_guess
+      'You won!'
     else
-      output.puts "You lost! The number was: #{@number}"
+      "You lost! The number was: #{number}"
     end
+  end
+
+  def announce(announcement)
+    output.puts announcement
   end
 end
 
