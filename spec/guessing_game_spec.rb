@@ -30,7 +30,7 @@ RSpec.describe GuessingGame do
       }x
 
       output = StringIO.new
-      gg = GuessingGame.new(input: input, output: output, number: 43)
+      gg = GuessingGame.new(input: input, output: output, target: 43)
 
       gg.play
 
@@ -61,7 +61,7 @@ RSpec.describe GuessingGame do
       }x
 
       output = StringIO.new
-      gg = GuessingGame.new(input: input, output: output, number: 42)
+      gg = GuessingGame.new(input: input, output: output, target: 42)
 
       gg.play
 
